@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Click Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .counter-container {
+            text-align: center;
+            background-color: white;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .counter-display {
+            font-size: 72px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 20px 0;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .increment-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .increment-btn:hover {
+            background-color: #45a049;
+        }
+
+        .decrement-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .decrement-btn:hover {
+            background-color: #da190b;
+        }
+
+        .reset-btn {
+            background-color: #2196F3;
+            color: white;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .reset-btn:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <div class="counter-container">
+        <h1>Button Click Counter</h1>
+        <div class="counter-display" id="counter">0</div>
+        <div class="button-container">
+            <button class="decrement-btn" onclick="decrement()">-</button>
+            <button class="increment-btn" onclick="increment()">+</button>
+        </div>
+        <button class="reset-btn" onclick="resetCounter()">Reset</button>
+    </div>
+
+    <script>
+        
+        let count = 0;
+
+       
+        const counterDisplay = document.getElementById('counter');
+
+        
+        function increment() {
+            count++;
+            counterDisplay.textContent = count;
+        }
+
+        
+        function decrement() {
+            count--;
+            counterDisplay.textContent = count;
+        }
+
+       
+        function resetCounter() {
+            count = 0;
+            counterDisplay.textContent = count;
+        }
+    </script>
+</body>
+</html>
 
