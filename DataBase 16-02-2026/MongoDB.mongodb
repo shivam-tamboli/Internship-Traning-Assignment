@@ -1,1091 +1,268 @@
-// ============================================
-// SOCIAL MEDIA PLATFORM - MONGODB
-// ============================================
+// =====================================================
+// SOCIAL MEDIA PLATFORM DATABASE
+// =====================================================
 
-// Switch to social_media database
-// use social_media; // This is a MongoDB shell command and should not be used in a JavaScript file.
+use social_media_db;
 
-// ============================================
-// CREATE COLLECTIONS
-// ============================================
 
-// 1. Users Collection
-db.createCollection("users");
-
-// 2. Posts Collection
-db.createCollection("posts");
-
-// 3. Comments Collection (embedded in posts)
-db.createCollection("comments");
-
-// 4. Likes Collection (embedded in posts and comments)
-db.createCollection("likes");
-
-// 5. Followers Collection
-db.createCollection("followers");
-
-// ============================================
-// INSERT SAMPLE DATA
-// ============================================
-
-// Insert Users
-db.users.insertMany([
-    {
-        _id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-        username: "john_doe",
-        email: "john@email.com",
-        full_name: "John Doe",
-        bio: "Tech enthusiast and software developer",
-        profile_image: "john_doe.jpg",
-        created_at: new Date("2022-01-15"),
-        followers_count: 1500,
-        following_count: 800,
-        posts_count: 45,
-        is_verified: true
-    },
-    {
-        _id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k2"),
-        username: "jane_smith",
-        email: "jane@email.com",
-        full_name: "Jane Smith",
-        bio: "Designer and creative thinker",
-        profile_image: "jane_smith.jpg",
-        created_at: new Date("2022-03-20"),
-        followers_count: 2100,
-        following_count: 600,
-        posts_count: 62,
-        is_verified: true
-    },
-    {
-        _id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k3"),
-        username: "mike_johnson",
-        email: "mike@email.com",
-        full_name: "Mike Johnson",
-        bio: "Photographer and travel blogger",
-        profile_image: "mike_johnson.jpg",
-        created_at: new Date("2022-05-10"),
-        followers_count: 3200,
-        following_count: 1200,
-        posts_count: 89,
-        is_verified: true
-    },
-    {
-        _id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k4"),
-        username: "emma_wilson",
-        email: "emma@email.com",
-        full_name: "Emma Wilson",
-        bio: "Fitness coach and wellness enthusiast",
-        profile_image: "emma_wilson.jpg",
-        created_at: new Date("2022-07-25"),
-        followers_count: 1800,
-        following_count: 950,
-        posts_count: 78,
-        is_verified: false
-    },
-    {
-        _id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k5"),
-        username: "alex_brown",
-        email: "alex@email.com",
-        full_name: "Alex Brown",
-        bio: "Music producer and DJ",
-        profile_image: "alex_brown.jpg",
-        created_at: new Date("2023-01-10"),
-        followers_count: 950,
-        following_count: 700,
-        posts_count: 32,
-        is_verified: false
-    }
+// ---------------------------
+// USERS
+// ---------------------------
+db.Users.insertMany([
+{
+    _id: ObjectId(),
+    username: "shivam",
+    email: "shivam@gmail.com",
+    createdAt: new Date(),
+    followers: [
+        { userId: ObjectId(), followedAt: new Date() },
+        { userId: ObjectId(), followedAt: new Date() }
+    ]
+},
+{
+    _id: ObjectId(),
+    username: "rahul",
+    email: "rahul@gmail.com",
+    createdAt: new Date(),
+    followers: [
+        { userId: ObjectId(), followedAt: new Date() }
+    ]
+}
 ]);
 
-// Insert Posts with nested Comments and Likes
-db.posts.insertMany([
-    {
-        _id: ObjectId("70a1b2c3d4e5f6g7h8i9j0k1"),
-        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-        username: "john_doe",
-        title: "Amazing Technology Insights",
-        content: "Just finished reading an incredible article about AI and machine learning. The future is here!",
-        image: "post1.jpg",
-        created_at: new Date("2024-01-15T10:30:00Z"),
-        updated_at: new Date("2024-01-15T10:30:00Z"),
-        likes: [
-            {
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k2"),
-                username: "jane_smith",
-                liked_at: new Date("2024-01-15T11:00:00Z")
-            },
-            {
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k3"),
-                username: "mike_johnson",
-                liked_at: new Date("2024-01-15T12:15:00Z")
-            },
-            {
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k4"),
-                username: "emma_wilson",
-                liked_at: new Date("2024-01-15T13:45:00Z")
-            }
-        ],
-        likes_count: 3,
-        comments: [
-            {
-                comment_id: ObjectId("80a1b2c3d4e5f6g7h8i9j0k1"),
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k2"),
-                username: "jane_smith",
-                text: "Great post! Really informative.",
-                created_at: new Date("2024-01-15T11:30:00Z"),
-                likes: [
-                    {
-                        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-                        username: "john_doe",
-                        liked_at: new Date("2024-01-15T12:00:00Z")
-                    }
-                ],
-                likes_count: 1
-            },
-            {
-                comment_id: ObjectId("80a1b2c3d4e5f6g7h8i9j0k2"),
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k3"),
-                username: "mike_johnson",
-                text: "AI is definitely the future!",
-                created_at: new Date("2024-01-15T12:45:00Z"),
-                likes: [],
-                likes_count: 0
-            }
-        ],
-        comments_count: 2,
-        shares_count: 5
-    },
-    {
-        _id: ObjectId("70a1b2c3d4e5f6g7h8i9j0k2"),
-        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k3"),
-        username: "mike_johnson",
-        title: "Beautiful Sunset at the Beach",
-        content: "Captured this stunning sunset during my travel to Bali. Nature is amazing!",
-        image: "sunset.jpg",
-        created_at: new Date("2024-01-16T14:20:00Z"),
-        updated_at: new Date("2024-01-16T14:20:00Z"),
-        likes: [
-            {
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-                username: "john_doe",
-                liked_at: new Date("2024-01-16T15:00:00Z")
-            },
-            {
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k2"),
-                username: "jane_smith",
-                liked_at: new Date("2024-01-16T15:30:00Z")
-            },
-            {
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k4"),
-                username: "emma_wilson",
-                liked_at: new Date("2024-01-16T16:00:00Z")
-            },
-            {
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k5"),
-                username: "alex_brown",
-                liked_at: new Date("2024-01-16T16:45:00Z")
-            }
-        ],
-        likes_count: 4,
-        comments: [
-            {
-                comment_id: ObjectId("80a1b2c3d4e5f6g7h8i9j0k3"),
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k2"),
-                username: "jane_smith",
-                text: "Absolutely gorgeous! Where exactly was this taken?",
-                created_at: new Date("2024-01-16T15:45:00Z"),
-                likes: [
-                    {
-                        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k3"),
-                        username: "mike_johnson",
-                        liked_at: new Date("2024-01-16T16:15:00Z")
-                    },
-                    {
-                        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-                        username: "john_doe",
-                        liked_at: new Date("2024-01-16T16:30:00Z")
-                    }
-                ],
-                likes_count: 2
-            }
-        ],
-        comments_count: 1,
-        shares_count: 12
-    },
-    {
-        _id: ObjectId("70a1b2c3d4e5f6g7h8i9j0k3"),
-        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k2"),
-        username: "jane_smith",
-        title: "Design Inspiration: Minimalism",
-        content: "Exploring the beauty of minimalist design. Less is more!",
-        image: "design.jpg",
-        created_at: new Date("2024-01-17T09:15:00Z"),
-        updated_at: new Date("2024-01-17T09:15:00Z"),
-        likes: [
-            {
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-                username: "john_doe",
-                liked_at: new Date("2024-01-17T10:00:00Z")
-            },
-            {
-                user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k3"),
-                username: "mike_johnson",
-                liked_at: new Date("2024-01-17T10:30:00Z")
-            }
-        ],
-        likes_count: 2,
-        comments: [],
-        comments_count: 0,
-        shares_count: 3
-    }
+
+// ---------------------------
+// POSTS (Nested comments & likes)
+// ---------------------------
+db.Posts.insertMany([
+{
+    userId: ObjectId(),
+    content: "Hello MongoDB 🚀",
+    createdAt: new Date(),
+    likes: [
+        { userId: ObjectId(), likedAt: new Date() },
+        { userId: ObjectId(), likedAt: new Date() }
+    ],
+    comments: [
+        {
+            userId: ObjectId(),
+            comment: "Nice post!",
+            createdAt: new Date()
+        },
+        {
+            userId: ObjectId(),
+            comment: "Great!",
+            createdAt: new Date()
+        }
+    ]
+}
 ]);
 
-// Insert Followers relationships
-db.followers.insertMany([
-    {
-        _id: ObjectId("90a1b2c3d4e5f6g7h8i9j0k1"),
-        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-        follower_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k2"),
-        followed_at: new Date("2022-02-10")
-    },
-    {
-        _id: ObjectId("90a1b2c3d4e5f6g7h8i9j0k2"),
-        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-        follower_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k3"),
-        followed_at: new Date("2022-04-15")
-    },
-    {
-        _id: ObjectId("90a1b2c3d4e5f6g7h8i9j0k3"),
-        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k3"),
-        follower_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-        followed_at: new Date("2022-05-20")
-    },
-    {
-        _id: ObjectId("90a1b2c3d4e5f6g7h8i9j0k4"),
-        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k2"),
-        follower_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1"),
-        followed_at: new Date("2022-03-05")
-    },
-    {
-        _id: ObjectId("90a1b2c3d4e5f6g7h8i9j0k5"),
-        user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k3"),
-        follower_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k4"),
-        followed_at: new Date("2023-06-10")
-    }
-]);
 
-// ============================================
-// QUERIES FOR SOCIAL MEDIA PLATFORM
-// ============================================
+// =====================================================
+// SOCIAL MEDIA QUERIES
+// =====================================================
 
-// 1. Find users with the most followers
-db.users.find()
-    .sort({ followers_count: -1 })
-    .limit(5)
-    .pretty();
-
-// 2. Find posts with the highest number of likes
-db.posts.find()
-    .sort({ likes_count: -1 })
-    .limit(5)
-    .project({
+// 1️⃣ Users with Most Followers
+db.Users.aggregate([
+{
+    $project: {
         username: 1,
-        title: 1,
-        likes_count: 1,
-        comments_count: 1,
-        created_at: 1
-    })
-    .pretty();
-
-// 3. Find posts with the highest number of comments
-db.posts.find()
-    .sort({ comments_count: -1 })
-    .limit(5)
-    .project({
-        username: 1,
-        title: 1,
-        likes_count: 1,
-        comments_count: 1,
-        created_at: 1
-    })
-    .pretty();
-
-// 4. Find posts with the most engagement (likes + comments)
-db.posts.aggregate([
-    {
-        $addFields: {
-            engagement: { $add: ["$likes_count", "$comments_count"] }
-        }
-    },
-    { $sort: { engagement: -1 } },
-    { $limit: 5 },
-    {
-        $project: {
-            username: 1,
-            title: 1,
-            likes_count: 1,
-            comments_count: 1,
-            engagement: 1,
-            created_at: 1
-        }
+        followerCount: { $size: "$followers" }
     }
-]).pretty();
-
-// 5. Get user activity over time (by month)
-db.posts.aggregate([
-    {
-        $group: {
-            _id: {
-                year: { $year: "$created_at" },
-                month: { $month: "$created_at" }
-            },
-            total_posts: { $sum: 1 },
-            total_likes: { $sum: "$likes_count" },
-            total_comments: { $sum: "$comments_count" }
-        }
-    },
-    { $sort: { "_id.year": 1, "_id.month": 1 } }
-]).pretty();
-
-// 6. Get user's posts with all engagement metrics
-db.posts.aggregate([
-    {
-        $match: {
-            user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1")
-        }
-    },
-    {
-        $addFields: {
-            total_engagement: { $add: ["$likes_count", "$comments_count", "$shares_count"] }
-        }
-    },
-    { $sort: { created_at: -1 } },
-    {
-        $project: {
-            title: 1,
-            content: 1,
-            likes_count: 1,
-            comments_count: 1,
-            shares_count: 1,
-            total_engagement: 1,
-            created_at: 1
-        }
-    }
-]).pretty();
-
-// 7. Find most active commenters
-db.posts.aggregate([
-    { $unwind: "$comments" },
-    {
-        $group: {
-            _id: "$comments.username",
-            total_comments: { $sum: 1 },
-            avg_likes_per_comment: { $avg: "$comments.likes_count" }
-        }
-    },
-    { $sort: { total_comments: -1 } },
-    { $limit: 10 }
-]).pretty();
-
-// 8. Find most liked comments
-db.posts.aggregate([
-    { $unwind: "$comments" },
-    {
-        $sort: { "comments.likes_count": -1 }
-    },
-    { $limit: 5 },
-    {
-        $project: {
-            "comments.username": 1,
-            "comments.text": 1,
-            "comments.likes_count": 1,
-            post_title: "$title"
-        }
-    }
-]).pretty();
-
-// 9. User engagement statistics
-db.posts.aggregate([
-    {
-        $group: {
-            _id: "$user_id",
-            username: { $first: "$username" },
-            total_posts: { $sum: 1 },
-            avg_likes_per_post: { $avg: "$likes_count" },
-            avg_comments_per_post: { $avg: "$comments_count" },
-            max_likes: { $max: "$likes_count" },
-            total_engagement: { $sum: { $add: ["$likes_count", "$comments_count"] } }
-        }
-    },
-    { $sort: { total_engagement: -1 } },
-    { $limit: 5 }
-]).pretty();
-
-// 10. Get followers of a specific user
-db.followers.aggregate([
-    {
-        $match: {
-            user_id: ObjectId("60a1b2c3d4e5f6g7h8i9j0k1")
-        }
-    },
-    {
-        $lookup: {
-            from: "users",
-            localField: "follower_id",
-            foreignField: "_id",
-            as: "follower_info"
-        }
-    },
-    { $unwind: "$follower_info" },
-    {
-        $project: {
-            follower_name: "$follower_info.username",
-            follower_full_name: "$follower_info.full_name",
-            followed_at: 1
-        }
-    }
-]).pretty();
-
-// 11. Find trending posts (high engagement in recent dates)
-db.posts.aggregate([
-    {
-        $match: {
-            created_at: {
-                $gte: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000)
-            }
-        }
-    },
-    {
-        $addFields: {
-            engagement_rate: {
-                $divide: [
-                    { $add: ["$likes_count", "$comments_count"] },
-                    { $max: [1, { $subtract: [new Date(), "$created_at"] }] }
-                ]
-            }
-        }
-    },
-    { $sort: { engagement_rate: -1 } },
-    { $limit: 5 },
-    {
-        $project: {
-            username: 1,
-            title: 1,
-            likes_count: 1,
-            comments_count: 1,
-            created_at: 1
-        }
-    }
-]).pretty();
-
-// ============================================
-// E-COMMERCE DATABASE - MONGODB
-// ============================================
-
-// Connect to the ecommerce database using MongoDB driver
-const db = connect("mongodb://localhost:27017/ecommerce");
-
-// ============================================
-// CREATE COLLECTIONS
-// ============================================
-
-db.createCollection("products");
-db.createCollection("customers");
-db.createCollection("orders");
-db.createCollection("reviews");
-db.createCollection("cart");
-
-// ============================================
-// INSERT SAMPLE DATA
-// ============================================
-
-// Insert Products
-db.products.insertMany([
-    {
-        _id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k1"),
-        product_name: "Laptop",
-        category: "Electronics",
-        price: 999.99,
-        stock: 50,
-        description: "High-performance laptop for professionals",
-        images: ["laptop1.jpg", "laptop2.jpg"],
-        specifications: {
-            processor: "Intel i7",
-            ram: "16GB",
-            storage: "512GB SSD"
-        },
-        created_at: new Date("2023-01-15"),
-        reviews: [
-            {
-                review_id: ObjectId("30a1b2c3d4e5f6g7h8i9j0k1"),
-                customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k1"),
-                customer_name: "John Doe",
-                rating: 5,
-                comment: "Excellent laptop, very fast!",
-                helpful_count: 15,
-                created_at: new Date("2024-01-10")
-            },
-            {
-                review_id: ObjectId("30a1b2c3d4e5f6g7h8i9j0k2"),
-                customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k2"),
-                customer_name: "Jane Smith",
-                rating: 4,
-                comment: "Good quality, slightly pricey",
-                helpful_count: 8,
-                created_at: new Date("2024-01-12")
-            }
-        ],
-        rating: 4.5,
-        review_count: 2,
-        sales_count: 45
-    },
-    {
-        _id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k2"),
-        product_name: "Wireless Mouse",
-        category: "Accessories",
-        price: 29.99,
-        stock: 200,
-        description: "Ergonomic wireless mouse",
-        images: ["mouse1.jpg"],
-        specifications: {
-            type: "Wireless",
-            dpi: 1600,
-            battery_life: "24 months"
-        },
-        created_at: new Date("2023-02-10"),
-        reviews: [
-            {
-                review_id: ObjectId("30a1b2c3d4e5f6g7h8i9j0k3"),
-                customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k3"),
-                customer_name: "Mike Johnson",
-                rating: 5,
-                comment: "Very comfortable!",
-                helpful_count: 22,
-                created_at: new Date("2024-01-05")
-            }
-        ],
-        rating: 5,
-        review_count: 1,
-        sales_count: 320
-    },
-    {
-        _id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k3"),
-        product_name: "Mechanical Keyboard",
-        category: "Accessories",
-        price: 79.99,
-        stock: 150,
-        description: "RGB Mechanical Gaming Keyboard",
-        images: ["keyboard1.jpg"],
-        specifications: {
-            switches: "Cherry MX",
-            backlight: "RGB",
-            layout: "Full Size"
-        },
-        created_at: new Date("2023-03-05"),
-        reviews: [],
-        rating: 0,
-        review_count: 0,
-        sales_count: 180
-    },
-    {
-        _id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k4"),
-        product_name: "4K Monitor",
-        category: "Electronics",
-        price: 499.99,
-        stock: 80,
-        description: "Ultra HD 4K display",
-        images: ["monitor1.jpg"],
-        specifications: {
-            resolution: "3840x2160",
-            size: "27 inch",
-            refresh_rate: "60Hz"
-        },
-        created_at: new Date("2023-04-01"),
-        reviews: [
-            {
-                review_id: ObjectId("30a1b2c3d4e5f6g7h8i9j0k4"),
-                customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k1"),
-                customer_name: "John Doe",
-                rating: 5,
-                comment: "Crystal clear display!",
-                helpful_count: 12,
-                created_at: new Date("2024-01-08")
-            }
-        ],
-        rating: 5,
-        review_count: 1,
-        sales_count: 95
-    },
-    {
-        _id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k5"),
-        product_name: "USB-C Cable",
-        category: "Accessories",
-        price: 9.99,
-        stock: 500,
-        description: "Fast charging USB-C cable",
-        images: ["cable1.jpg"],
-        specifications: {
-            length: "2 meters",
-            charge_speed: "100W"
-        },
-        created_at: new Date("2023-05-10"),
-        reviews: [],
-        rating: 0,
-        review_count: 0,
-        sales_count: 1200
-    }
+},
+{ $sort: { followerCount: -1 } },
+{ $limit: 5 }
 ]);
 
-// Insert Customers
-db.customers.insertMany([
-    {
-        _id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k1"),
-        name: "John Doe",
-        email: "john@email.com",
-        phone: "555-1001",
-        address: "123 Main St, New York",
-        city: "New York",
-        country: "USA",
-        joined_date: new Date("2023-01-15"),
-        total_spent: 1599.97,
-        total_orders: 3,
-        loyalty_status: "Gold"
-    },
-    {
-        _id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k2"),
-        name: "Jane Smith",
-        email: "jane@email.com",
-        phone: "555-1002",
-        address: "456 Oak Ave, Los Angeles",
-        city: "Los Angeles",
-        country: "USA",
-        joined_date: new Date("2023-02-20"),
-        total_spent: 1009.97,
-        total_orders: 2,
-        loyalty_status: "Silver"
-    },
-    {
-        _id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k3"),
-        name: "Mike Johnson",
-        email: "mike@email.com",
-        phone: "555-1003",
-        address: "789 Pine Rd, Chicago",
-        city: "Chicago",
-        country: "USA",
-        joined_date: new Date("2023-03-10"),
-        total_spent: 299.97,
-        total_orders: 4,
-        loyalty_status: "Bronze"
+
+// 2️⃣ Posts with Highest Likes
+db.Posts.aggregate([
+{
+    $project: {
+        content: 1,
+        likeCount: { $size: "$likes" },
+        commentCount: { $size: "$comments" }
     }
+},
+{ $sort: { likeCount: -1 } }
 ]);
 
-// Insert Orders with embedded order items and reviews
-db.orders.insertMany([
-    {
-        _id: ObjectId("40a1b2c3d4e5f6g7h8i9j0k1"),
-        customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k1"),
-        customer_name: "John Doe",
-        order_date: new Date("2024-01-05"),
-        items: [
-            {
-                product_id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k1"),
-                product_name: "Laptop",
-                quantity: 1,
-                unit_price: 999.99,
-                subtotal: 999.99
-            },
-            {
-                product_id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k2"),
-                product_name: "Wireless Mouse",
-                quantity: 1,
-                unit_price: 29.99,
-                subtotal: 29.99
-            }
-        ],
-        total_amount: 1029.98,
-        status: "Completed",
-        shipping_address: "123 Main St, New York",
-        shipping_cost: 0,
-        tax: 0,
-        review: {
-            rating: 5,
-            comment: "Great products and fast delivery!",
-            review_date: new Date("2024-01-15")
-        }
-    },
-    {
-        _id: ObjectId("40a1b2c3d4e5f6g7h8i9j0k2"),
-        customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k1"),
-        customer_name: "John Doe",
-        order_date: new Date("2024-01-20"),
-        items: [
-            {
-                product_id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k4"),
-                product_name: "4K Monitor",
-                quantity: 1,
-                unit_price: 499.99,
-                subtotal: 499.99
-            }
-        ],
-        total_amount: 499.99,
-        status: "Completed",
-        shipping_address: "123 Main St, New York",
-        shipping_cost: 0,
-        tax: 0,
-        review: {
-            rating: 5,
-            comment: "Excellent monitor!",
-            review_date: new Date("2024-02-01")
-        }
-    },
-    {
-        _id: ObjectId("40a1b2c3d4e5f6g7h8i9j0k3"),
-        customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k2"),
-        customer_name: "Jane Smith",
-        order_date: new Date("2024-01-10"),
-        items: [
-            {
-                product_id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k1"),
-                product_name: "Laptop",
-                quantity: 1,
-                unit_price: 999.99,
-                subtotal: 999.99
-            }
-        ],
-        total_amount: 999.99,
-        status: "Completed",
-        shipping_address: "456 Oak Ave, Los Angeles",
-        shipping_cost: 0,
-        tax: 0,
-        review: {
-            rating: 4,
-            comment: "Good value for money",
-            review_date: new Date("2024-01-25")
-        }
-    },
-    {
-        _id: ObjectId("40a1b2c3d4e5f6g7h8i9j0k4"),
-        customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k3"),
-        customer_name: "Mike Johnson",
-        order_date: new Date("2024-01-15"),
-        items: [
-            {
-                product_id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k2"),
-                product_name: "Wireless Mouse",
-                quantity: 1,
-                unit_price: 29.99,
-                subtotal: 29.99
-            },
-            {
-                product_id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k3"),
-                product_name: "Mechanical Keyboard",
-                quantity: 1,
-                unit_price: 79.99,
-                subtotal: 79.99
-            },
-            {
-                product_id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k5"),
-                product_name: "USB-C Cable",
-                quantity: 2,
-                unit_price: 9.99,
-                subtotal: 19.98
-            }
-        ],
-        total_amount: 129.96,
-        status: "Completed",
-        shipping_address: "789 Pine Rd, Chicago",
-        shipping_cost: 0,
-        tax: 0,
-        review: {
-            rating: 5,
-            comment: "Very comfortable!",
-            review_date: new Date("2024-02-05")
-        }
-    },
-    {
-        _id: ObjectId("40a1b2c3d4e5f6g7h8i9j0k5"),
-        customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k2"),
-        customer_name: "Jane Smith",
-        order_date: new Date("2024-01-30"),
-        items: [
-            {
-                product_id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k5"),
-                product_name: "USB-C Cable",
-                quantity: 1,
-                unit_price: 9.99,
-                subtotal: 9.99
-            }
-        ],
-        total_amount: 9.99,
-        status: "Pending",
-        shipping_address: "456 Oak Ave, Los Angeles",
-        shipping_cost: 0,
-        tax: 0
+
+// 3️⃣ Posts with Highest Comments
+db.Posts.aggregate([
+{
+    $project: {
+        content: 1,
+        commentCount: { $size: "$comments" }
     }
+},
+{ $sort: { commentCount: -1 } }
 ]);
 
-// Insert Cart items
-db.cart.insertMany([
-    {
-        _id: ObjectId("50a1b2c3d4e5f6g7h8i9j0k1"),
-        customer_id: ObjectId("20a1b2c3d4e5f6g7h8i9j0k3"),
-        items: [
-            {
-                product_id: ObjectId("10a1b2c3d4e5f6g7h8i9j0k4"),
-                product_name: "4K Monitor",
-                quantity: 1,
-                unit_price: 499.99,
-                subtotal: 499.99
-            }
-        ],
-        total_items: 1,
-        total_price: 499.99,
-        updated_at: new Date("2024-02-01")
+
+// 4️⃣ Aggregate User Activity Over Time (Posts per Month)
+db.Posts.aggregate([
+{
+    $group: {
+        _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" }
+        },
+        totalPosts: { $sum: 1 }
     }
+},
+{ $sort: { "_id.year": 1, "_id.month": 1 } }
 ]);
 
-// ============================================
-// QUERIES FOR E-COMMERCE PLATFORM
-// ============================================
 
-// 1. Find top-selling products per category
-db.products.aggregate([
-    {
-        $group: {
-            _id: "$category",
-            products: {
-                $push: {
-                    name: "$product_name",
-                    sales: "$sales_count",
-                    price: "$price",
-                    rating: "$rating"
-                }
-            }
-        }
-    },
-    {
-        $project: {
-            category: "$_id",
-            _id: 0,
-            top_product: {
-                $arrayElemAt: [
-                    {
-                        $sortArray: { input: "$products", sortBy: { sales: -1 } }
-                    },
-                    0
-                ]
-            }
-        }
+// =====================================================
+// E-COMMERCE DATABASE
+// =====================================================
+
+use ecommerce_db;
+
+
+// ---------------------------
+// PRODUCTS
+// ---------------------------
+db.Products.insertMany([
+{
+    name: "iPhone 15",
+    category: "Electronics",
+    price: 80000,
+    reviews: [
+        { customerId: ObjectId(), rating: 5, comment: "Excellent!", date: new Date() },
+        { customerId: ObjectId(), rating: 4, comment: "Good phone", date: new Date() }
+    ]
+},
+{
+    name: "Running Shoes",
+    category: "Sports",
+    price: 3000,
+    reviews: [
+        { customerId: ObjectId(), rating: 4, comment: "Comfortable", date: new Date() }
+    ]
+}
+]);
+
+
+// ---------------------------
+// CUSTOMERS
+// ---------------------------
+db.Customers.insertMany([
+{
+    name: "Shivam",
+    email: "shivam@gmail.com",
+    createdAt: new Date()
+},
+{
+    name: "Rahul",
+    email: "rahul@gmail.com",
+    createdAt: new Date()
+}
+]);
+
+
+// ---------------------------
+// ORDERS (Embedded order items)
+// ---------------------------
+db.Orders.insertMany([
+{
+    customerId: ObjectId(),
+    orderDate: new Date(),
+    items: [
+        { productId: ObjectId(), quantity: 2, price: 80000 },
+        { productId: ObjectId(), quantity: 1, price: 3000 }
+    ],
+    totalAmount: 163000
+}
+]);
+
+
+// ---------------------------
+// CART
+// ---------------------------
+db.Cart.insertOne({
+    customerId: ObjectId(),
+    items: [
+        { productId: ObjectId(), quantity: 1 }
+    ],
+    updatedAt: new Date()
+});
+
+
+// =====================================================
+// E-COMMERCE QUERIES
+// =====================================================
+
+// 1️⃣ Top-Selling Products Per Category
+db.Orders.aggregate([
+{ $unwind: "$items" },
+{
+    $group: {
+        _id: "$items.productId",
+        totalSold: { $sum: "$items.quantity" }
     }
-]).pretty();
+},
+{ $sort: { totalSold: -1 } }
+]);
 
-// 2. Detailed top-selling products per category
-db.products.aggregate([
-    { $sort: { sales_count: -1 } },
-    {
-        $group: {
-            _id: "$category",
-            top_products: {
-                $push: {
-                    product_name: "$product_name",
-                    sales: "$sales_count",
-                    price: "$price",
-                    stock: "$stock",
-                    rating: "$rating"
-                }
-            }
-        }
-    },
-    {
-        $project: {
-            category: "$_id",
-            _id: 0,
-            top_3_products: { $slice: ["$top_products", 3] }
-        }
+
+// 2️⃣ Customer Purchase Patterns (Total Spent)
+db.Orders.aggregate([
+{
+    $group: {
+        _id: "$customerId",
+        totalOrders: { $sum: 1 },
+        totalSpent: { $sum: "$totalAmount" }
     }
-]).pretty();
+},
+{ $sort: { totalSpent: -1 } }
+]);
 
-// 3. Track customer purchase patterns
-db.orders.aggregate([
-    {
-        $match: { status: "Completed" }
-    },
-    {
-        $group: {
-            _id: "$customer_id",
-            customer_name: { $first: "$customer_name" },
-            total_purchases: { $sum: 1 },
-            total_spent: { $sum: "$total_amount" },
-            avg_order_value: { $avg: "$total_amount" },
-            first_purchase: { $min: "$order_date" },
-            last_purchase: { $max: "$order_date" },
-            products_bought: { $sum: { $size: "$items" } }
-        }
-    },
-    { $sort: { total_spent: -1 } }
-]).pretty();
 
-// 4. Aggregate revenue monthly and yearly
-db.orders.aggregate([
-    {
-        $match: { status: "Completed" }
-    },
-    {
-        $group: {
-            _id: {
-                year: { $year: "$order_date" },
-                month: { $month: "$order_date" }
-            },
-            total_revenue: { $sum: "$total_amount" },
-            total_orders: { $sum: 1 },
-            avg_order_value: { $avg: "$total_amount" }
-        }
-    },
-    { $sort: { "_id.year": 1, "_id.month": 1 } }
-]).pretty();
-
-// 5. Yearly revenue summary
-db.orders.aggregate([
-    {
-        $match: { status: "Completed" }
-    },
-    {
-        $group: {
-            _id: { $year: "$order_date" },
-            total_revenue: { $sum: "$total_amount" },
-            total_orders: { $sum: 1 },
-            avg_order_value: { $avg: "$total_amount" }
-        }
-    },
-    { $sort: { _id: 1 } }
-]).pretty();
-
-// 6. Product performance analysis
-db.products.aggregate([
-    {
-        $addFields: {
-            revenue: { $multiply: ["$price", "$sales_count"] }
-        }
-    },
-    {
-        $project: {
-            product_name: 1,
-            category: 1,
-            price: 1,
-            sales_count: 1,
-            revenue: 1,
-            rating: 1,
-            review_count: 1,
-            stock: 1,
-            avg_review_score: { $avg: "$reviews.rating" }
-        }
-    },
-    { $sort: { revenue: -1 } }
-]).pretty();
-
-// 7. Customer segmentation by spending
-db.orders.aggregate([
-    {
-        $match: { status: "Completed" }
-    },
-    {
-        $group: {
-            _id: "$customer_id",
-            customer_name: { $first: "$customer_name" },
-            total_spent: { $sum: "$total_amount" },
-            total_orders: { $sum: 1 }
-        }
-    },
-    {
-        $bucket: {
-            groupBy: "$total_spent",
-            boundaries: [0, 500, 1000, 1500, 2000],
-            default: "High Spenders",
-            output: {
-                count: { $sum: 1 },
-                customers: { $push: "$customer_name" }
-            }
-        }
+// 3️⃣ Monthly Revenue
+db.Orders.aggregate([
+{
+    $group: {
+        _id: {
+            year: { $year: "$orderDate" },
+            month: { $month: "$orderDate" }
+        },
+        monthlyRevenue: { $sum: "$totalAmount" }
     }
-]).pretty();
+},
+{ $sort: { "_id.year": 1, "_id.month": 1 } }
+]);
 
-// 8. Most reviewed products
-db.products.aggregate([
-    { $sort: { review_count: -1 } },
-    { $limit: 5 },
-    {
-        $project: {
-            product_name: 1,
-            category: 1,
-            rating: 1,
-            review_count: 1,
-            reviews: 1,
-            price: 1
-        }
+
+// 4️⃣ Yearly Revenue
+db.Orders.aggregate([
+{
+    $group: {
+        _id: { year: { $year: "$orderDate" } },
+        yearlyRevenue: { $sum: "$totalAmount" }
     }
-]).pretty();
+},
+{ $sort: { "_id.year": 1 } }
+]);
 
-// 9. Average product rating by category
-db.products.aggregate([
-    {
-        $group: {
-            _id: "$category",
-            avg_rating: { $avg: "$rating" },
-            total_products: { $sum: 1 },
-            total_reviews: { $sum: "$review_count" }
-        }
-    },
-    { $sort: { avg_rating: -1 } }
-]).pretty();
 
-// 10. Orders with embedded items and customer details
-db.orders.aggregate([
-    {
-        $lookup: {
-            from: "customers",
-            localField: "customer_id",
-            foreignField: "_id",
-            as: "customer_details"
-        }
-    },
-    { $unwind: "$customer_details" },
-    {
-        $project: {
-            order_id: "$_id",
-            customer_name: "$customer_name",
-            customer_email: "$customer_details.email",
-            order_date: 1,
-            items: 1,
-            total_amount: 1,
-            status: 1,
-            review: 1
-        }
-    },
-    { $sort: { order_date: -1 } }
-]).pretty();
-
-// 11. Inventory management - Low stock products
-db.products.find({ stock: { $lt: 100 } })
-    .project({
-        product_name: 1,
-        category: 1,
-        stock: 1,
-        price: 1,
-        sales_count: 1
-    })
-    .sort({ stock: 1 })
-    .pretty();
-
-// 12. Product recommendations based on purchase history
-db.orders.aggregate([
-    { $unwind: "$items" },
-    {
-        $group: {
-            _id: "$items.product_id",
-            product_name: { $first: "$items.product_name" },
-            frequently_bought_together: {
-                $push: "$items.product_name"
-            }
-        }
+// 5️⃣ Average Rating Per Product
+db.Products.aggregate([
+{ $unwind: "$reviews" },
+{
+    $group: {
+        _id: "$name",
+        avgRating: { $avg: "$reviews.rating" },
+        totalReviews: { $sum: 1 }
     }
-]).pretty();
+},
+{ $sort: { avgRating: -1 } }
+]);
+
+
+// =====================================================
+// END OF FILE
+// =====================================================
