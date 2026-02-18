@@ -10,7 +10,7 @@ public class Main {
 
     static final String URL = "jdbc:mysql://localhost:3306/formdb";
     static final String USER = "root";
-    static final String PASSWORD = "1234"; // change this
+    static final String PASSWORD = "1234";
 
     public static void main(String[] args) {
 
