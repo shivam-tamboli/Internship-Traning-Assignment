@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/logout">Logout</a>
+</div>
+
+<div class="table-container">
+    <h2 style="text-align:center;">Candidate List</h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Party</th>
+            <th>Action</th>
+        </tr>
+
+        <tr th:each="candidate : ${candidates}">
+            <td th:text="${candidate.name}"></td>
+            <td th:text="${candidate.party}"></td>
+            <td>
+                <form th:action="@{/user/vote/{id}(id=${candidate.id})}" method="post">
+                    <button class="action-btn vote-btn">Vote</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
